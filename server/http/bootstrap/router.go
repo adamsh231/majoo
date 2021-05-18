@@ -27,4 +27,11 @@ func (boot Bootstrap) RegisterRoute() {
 	}
 	testRoute.RegisterRoute()
 
+	// Auth route
+	AuthRoute := routers.AuthRoutes{
+		RouteGroup: apiV1,
+		Handler:    handlerType,
+	}
+	AuthRoute.RegisterRoute()
+
 }

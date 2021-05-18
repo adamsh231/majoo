@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/adamsh231/majoo/domain"
 	"github.com/adamsh231/majoo/packages/helper"
+	postgresql "github.com/adamsh231/majoo/packages/postgres"
 	"github.com/adamsh231/majoo/server/http/bootstrap"
 	"github.com/adamsh231/majoo/usecase"
 	"github.com/gofiber/fiber/v2"
@@ -30,7 +31,7 @@ func main() {
 	domain.ValidatorInit()
 
 	// init migration
-	//postgresql.Migrate(config.DB)
+	postgresql.Migrate(config.PostgresDB)
 
 	// init go fiber
 	app := fiber.New()
