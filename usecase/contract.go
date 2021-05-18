@@ -3,17 +3,23 @@ package usecase
 import (
 	"database/sql"
 	"github.com/adamsh231/majoo/domain/view_models"
+	"github.com/adamsh231/majoo/packages/jwe"
+	"github.com/adamsh231/majoo/packages/jwt"
 	ut "github.com/go-playground/universal-translator"
 	validator "github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
 
 type Contract struct {
-	App *fiber.App
-	PostgresDB *sql.DB
-	PostgresTX *sql.Tx
-	Validate   *validator.Validate
-	Translator ut.Translator
+	UserID        string
+	RoleID        int
+	App           *fiber.App
+	PostgresDB    *sql.DB
+	PostgresTX    *sql.Tx
+	Validate      *validator.Validate
+	Translator    ut.Translator
+	JweCredential jwe.Credential
+	JwtCredential jwt.JwtCredential
 }
 
 const (

@@ -43,6 +43,8 @@ func main() {
 		PostgresTX: nil,
 		Validate:   domain.ValidatorDriver,
 		Translator: domain.Translator,
+		JwtCredential:        config.JwtCredential,
+		JweCredential:        config.JweCredential,
 	}
 
 	//init bootstrap
