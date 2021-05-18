@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"github.com/adamsh231/majoo/domain/interfaces"
-	"golang.org/x/crypto/bcrypt"
+	"github.com/adamsh231/majoo/packages/helper"
 )
 
 type AuthUseCase struct {
@@ -21,16 +21,11 @@ func (a AuthUseCase) Login(email, password string) (res string, err error) {
 		return "Email salah!", err
 	}
 
-	isValid := checkHashString(password, credPass)
+	isValid := helper.CheckHashString(password, credPass)
 	if isValid{
-		res = "Password benar"
+		res = "Logged In"
 	}
 
 	return res, err
 }
 
-func checkHashString(password, hash string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-
-	return err == nil
-}
