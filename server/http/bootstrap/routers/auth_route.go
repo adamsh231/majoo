@@ -12,20 +12,19 @@ type AuthRoutes struct {
 }
 
 func (route AuthRoutes) RegisterRoute() {
-	AuthHandler := handlers.AuthHandler{Handler: route.Handler}
-	UserHandler := handlers.UserHandler{Handler: route.Handler}
-	jwtMiddleware := middlewares.JwtMiddleware{Contract:route.Handler.UcContract}
+	authHandler := handlers.AuthHandler{Handler: route.Handler}
+	userHandler := handlers.UserHandler{Handler: route.Handler}
+	jwtMiddleware := middlewares.JwtMiddleware{Contract: route.Handler.UcContract}
 
 	authenticationRoutes := route.RouteGroup.Group("/auth")
 
-	authenticationRoutes.Post("/register", AuthHandler.Register)
-	authenticationRoutes.Post("/login", AuthHandler.Login)
+	authenticationRoutes.Post("/register", authHandler.Register)
+	authenticationRoutes.Post("/login", authHandler.Login)
 
 	authenticationRoutesJWT := authenticationRoutes.Group("/user")
 	authenticationRoutesJWT.Use(jwtMiddleware.New)
 
-	authenticationRoutesJWT.Get("", UserHandler.Browse)
-	authenticationRoutesJWT.Put("/:id", UserHandler.Edit)
-	authenticationRoutesJWT.Delete("/:id", UserHandler.Delete)
+	authenticationRoutesJWT.Get("", userHandler.Browse)
+	authenticationRoutesJWT.Put("/:id", userHandler.Edit)
+	authenticationRoutesJWT.Delete("/:id", userHandler.Delete)
 }
-
