@@ -45,3 +45,14 @@ func (repo UserRepository) Edit(model models.User, tx *sql.Tx) (res string, err 
 	res = model.ID
 	return res, err
 }
+
+func (repo UserRepository) Delete(model models.User, tx *sql.Tx) (res string, err error) {
+	statement := `UPDATE users SET deleted_at=$1 WHERE id=$2`
+	_, err = tx.Exec(statement, model.DeletedAt, model.ID)
+	if err != nil {
+		return res, err
+	}
+
+	res = model.ID
+	return res, err
+}

@@ -10,5 +10,7 @@ type IUserUseCase interface {
 
 	Edit(req *requests.UserEditRequest, id string) (res string, err error)
 
+	Delete(id string) (res string, err error)
+
 	Login(req *requests.UserLoginRequest) (res view_models.LoginVm, err error)
 }

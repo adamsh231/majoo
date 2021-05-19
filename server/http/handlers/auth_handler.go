@@ -83,3 +83,24 @@ func (handler AuthHandler) Edit(ctx *fiber.Ctx) (err error) {
 
 	return handler.SendResponse(ctx, ResponseWithOutMeta, res, nil, err, http.StatusUnprocessableEntity)
 }
+
+func (handler AuthHandler) Delete(ctx *fiber.Ctx) (err error) {
+	// Get param
+	ID := ctx.Params("id")
+
+	// Database processing
+	handler.UcContract.PostgresTX, err = handler.UcContract.PostgresDB.Begin()
+	if err != nil {
+		handler.UcContract.PostgresTX.Rollback()
+		return handler.SendResponse(ctx, ResponseWithOutMeta, nil, nil, err, http.StatusUnprocessableEntity)
+	}
+	uc := usecase.NewUserUseCase(handler.UcContract)
+	res, err := uc.Delete(ID)
+	if err != nil {
+		handler.UcContract.PostgresTX.Rollback()
+		return handler.SendResponse(ctx, ResponseWithOutMeta, nil, nil, err, http.StatusUnprocessableEntity)
+	}
+	handler.UcContract.PostgresTX.Commit()
+
+	return handler.SendResponse(ctx, ResponseWithOutMeta, res, nil, err, http.StatusUnprocessableEntity)
+}

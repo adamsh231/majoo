@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"database/sql"
 	"errors"
 	"github.com/adamsh231/majoo/domain/interfaces"
 	"github.com/adamsh231/majoo/domain/models"
@@ -126,3 +127,21 @@ func (uc UserUseCase) Edit(req *requests.UserEditRequest, id string) (res string
 
 	return res, err
 }
+
+func (uc UserUseCase) Delete(id string) (res string, err error) {
+	now := time.Now().UTC()
+	model := models.User{
+		ID:        id,
+		DeletedAt: sql.NullTime{Time: now, Valid: true},
+	}
+
+	repo := repositories.NewUserRepository(uc.PostgresDB)
+	res, err = repo.Delete(model, uc.PostgresTX)
+	if err != nil {
+		helper.LogOnly(err.Error(), "uc-delete")
+		return res, err
+	}
+
+	return res, err
+}
+

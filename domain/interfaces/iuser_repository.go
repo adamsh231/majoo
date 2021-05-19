@@ -11,4 +11,6 @@ type IUserRepository interface {
 	Add(model models.User, tx *sql.Tx) (res string, err error)
 
 	Edit(model models.User, tx *sql.Tx) (res string, err error)
+
+	Delete(model models.User, tx *sql.Tx) (res string, err error)
 }

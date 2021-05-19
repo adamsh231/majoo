@@ -24,5 +24,6 @@ func (route AuthRoutes) RegisterRoute() {
 	authenticationRoutesJWT.Use(jwtMiddleware.New)
 
 	authenticationRoutesJWT.Put("/:id", handler.Edit)
+	authenticationRoutesJWT.Delete("/:id", handler.Delete)
 }
 
