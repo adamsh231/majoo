@@ -1,16 +1,25 @@
 package models
 
-import "database/sql"
+import (
+	"database/sql"
+	"time"
+)
 
 type Merchant struct {
 	ID        string
 	Name      string
 	Phone     string
 	Address   string
-	CreatedAt string
-	UpdatedAt string
-	DeletedAt string
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt sql.NullTime
 }
+
+const(
+	MerchantSelectStatement = `SELECT M.id, M.name, M.phone, M.address, M.created_at, M.updated_at, M.deleted_at FROM merchants M`
+	MerchantDeleteStatement = `WHERE M.deleted_at IS NULL`
+	MerchantSearchStatement = `AND M.name LIKE $1`
+)
 
 func NewMerchant() *Merchant {
 	return &Merchant{}
