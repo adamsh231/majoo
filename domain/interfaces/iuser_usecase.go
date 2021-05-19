@@ -6,6 +6,8 @@ import (
 )
 
 type IUserUseCase interface {
+	Browse(search, orderBy, sort string, page, limit int) (res []*view_models.UserListVM, pagination view_models.PaginationVm, err error)
+
 	Add(req *requests.UserAddRequest) (res string, err error)
 
 	Edit(req *requests.UserEditRequest, id string) (res string, err error)

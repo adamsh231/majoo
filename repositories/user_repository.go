@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"github.com/adamsh231/majoo/domain/interfaces"
 	"github.com/adamsh231/majoo/domain/models"
+	"strings"
 )
 
 type UserRepository struct {
@@ -14,8 +15,27 @@ func NewUserRepository(postgresDB *sql.DB) interfaces.IUserRepository {
 	return &UserRepository{PostgresDB: postgresDB}
 }
 
+func (repo UserRepository) Browse(search, orderBy, sort string, limit, offset int) (res []models.User, err error) {
+	model := models.NewUser()
+	statement := models.UserSelectStatement + ` ` + models.UserDeleteStatement + ` ` + models.UserSearchStatement + ` order by U.` + orderBy + ` ` + sort + ` limit $2 offset $3`
+	rows, err := repo.PostgresDB.Query(statement, "%"+strings.ToLower(search)+"%", limit, offset)
+	if err != nil {
+		return res, err
+	}
+
+	for rows.Next() {
+		temp, err := model.ScanRows(rows)
+		if err != nil {
+			return res, err
+		}
+		res = append(res, temp)
+	}
+
+	return res, nil
+}
+
 func (repo UserRepository) Read(model models.User) (res models.User, err error) {
-	statement := models.UserSelectStatement + ` ` + models.UserDeleteStatement + ` AND U.email=$1`
+	statement := models.UserSelectStatement + ` ` + models.UserDeleteStatement + ` ` + models.UserSearchStatement
 	row := repo.PostgresDB.QueryRow(statement, model.Email)
 	res, err = model.ScanRow(row)
 	if err != nil {
@@ -54,5 +74,15 @@ func (repo UserRepository) Delete(model models.User, tx *sql.Tx) (res string, er
 	}
 
 	res = model.ID
+	return res, err
+}
+
+func (repo UserRepository) Count(search string) (res int, err error) {
+	statement := `SELECT COUNT (U.id) FROM users U ` + models.UserDeleteStatement + ` ` + models.UserSearchStatement
+	err = repo.PostgresDB.QueryRow(statement, "%"+strings.ToLower(search)+"%").Scan(&res)
+	if err != nil {
+		return res, err
+	}
+
 	return res, err
 }

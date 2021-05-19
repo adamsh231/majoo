@@ -21,8 +21,9 @@ func NewUser() *User{
 }
 
 const(
-	UserSelectStatement = "SELECT U.id, U.name, U.email, U.password, U.role, U.created_at, U.updated_at, U.deleted_at FROM users U"
-	UserDeleteStatement = "WHERE U.deleted_at IS NULL"
+	UserSelectStatement = `SELECT U.id, U.name, U.email, U.password, U.role, U.created_at, U.updated_at, U.deleted_at FROM users U`
+	UserDeleteStatement = `WHERE U.deleted_at IS NULL`
+	UserSearchStatement = `AND U.email LIKE $1`
 )
 
 func (model User) ScanRows(rows *sql.Rows) (res User, err error) {

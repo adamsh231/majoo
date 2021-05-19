@@ -76,6 +76,32 @@ func (uc UserUseCase) generateJWT(issuer, payload string) (res view_models.Login
 	return res, nil
 }
 
+func (uc UserUseCase) Browse(search, orderBy, sort string, page, limit int) (res []*view_models.UserListVM, pagination view_models.PaginationVm, err error) {
+	repository := repositories.NewUserRepository(uc.PostgresDB)
+	offset, limit, page, orderBy, sort := uc.setPaginationParameter(page, limit, orderBy, sort)
+
+	users, err := repository.Browse(search, orderBy, sort, limit, offset)
+	if err != nil {
+		helper.LogOnly(err.Error(), "uc-browse")
+		return res, pagination, err
+	}
+	for _, user := range users {
+		vm := view_models.NewUserListVM()
+		vm.Build(&user)
+		res = append(res, vm)
+	}
+
+	//set pagination
+	totalCount, err := repository.Count(search)
+	if err != nil {
+		helper.LogOnly(err.Error(), "uc-browse-count")
+		return res, pagination, err
+	}
+	pagination = uc.setPaginationResponse(page, limit, totalCount)
+
+	return res, pagination, nil
+}
+
 func (uc UserUseCase) Add(req *requests.UserAddRequest) (res string, err error) {
 	now := time.Now().UTC()
 	passwordHash, err := helper.HashAndSalt(req.Password)
