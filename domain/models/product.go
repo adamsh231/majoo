@@ -23,7 +23,7 @@ func NewProduct() *Product {
 }
 
 func (model Product) ScanRows(rows *sql.Rows) (res Product, err error) {
-	err = rows.Scan(&res.ID, &res.Merchant.ID, &res.Merchant.Name, &res.Sku, &res.Name, &res.Slug, &res.Description, &res.CreatedAt, &res.UpdatedAt, &res.DeletedAt)
+	err = rows.Scan(&res.ID, &res.Merchant.ID, &res.Merchant.Name, &res.Sku, &res.Name, &res.Slug, &res.Description, &res.CreatedAt, &res.UpdatedAt, &res.DeletedAt, &res.Images)
 	if err != nil {
 		return res, err
 	}
@@ -32,7 +32,7 @@ func (model Product) ScanRows(rows *sql.Rows) (res Product, err error) {
 }
 
 func (model Product) ScanRow(row *sql.Row) (res Product, err error) {
-	err = row.Scan(&res.ID, &res.Merchant.ID, &res.Merchant.Name, &res.Sku, &res.Name, &res.Slug, &res.Description, &res.CreatedAt, &res.UpdatedAt, &res.DeletedAt)
+	err = row.Scan(&res.ID, &res.Merchant.ID, &res.Merchant.Name, &res.Sku, &res.Name, &res.Slug, &res.Description, &res.CreatedAt, &res.UpdatedAt, &res.DeletedAt, &res.Images)
 	if err != nil {
 		return res, err
 	}
