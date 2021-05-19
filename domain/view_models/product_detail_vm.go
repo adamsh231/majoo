@@ -34,7 +34,7 @@ func (vm *ProductDetailVM) Build(model models.Product) {
 		Sku:         model.Sku,
 		Name:        model.Name,
 		Slug:        model.Slug,
-		Description: model.Description,
+		Description: model.Description.String,
 		Images: strings.Split(model.Images, ","),
 	}
 }

@@ -41,7 +41,7 @@ func (uc MerchantUseCase) Browse(search, orderBy, sort string, page, limit int) 
 	}
 	pagination = uc.setPaginationResponse(page, limit, totalCount)
 
-	return res, pagination, nil
+	return res, pagination, err
 }
 
 func (uc MerchantUseCase) Read(id string) (res *view_models.MerchantDetailVM, err error) {

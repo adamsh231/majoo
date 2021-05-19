@@ -5,15 +5,31 @@ import (
 	"github.com/adamsh231/majoo/usecase"
 	"github.com/gofiber/fiber/v2"
 	"net/http"
+	"strconv"
 )
 
 type ProductHandler struct {
 	Handler
 }
 
-func (handler AuthHandler) Add(ctx *fiber.Ctx) (err error) {
+func (handler ProductHandler) Browse(ctx *fiber.Ctx) (err error) {
+	// Get Query Param
+	search := ctx.Query("search")
+	orderBy := ctx.Query("order_by")
+	sort := ctx.Query("sort")
+	limit, _ := strconv.Atoi(ctx.Query("limit"))
+	page, _ := strconv.Atoi(ctx.Query("page"))
+
+	// Database Processing
+	uc := usecase.NewProductUseCase(handler.UcContract)
+	res, pagination, err := uc.Browse(search, orderBy, sort, page, limit)
+
+	return handler.SendResponse(ctx, ResponseWithMeta, res, pagination, err, http.StatusUnprocessableEntity)
+}
+
+func (handler ProductHandler) Add(ctx *fiber.Ctx) (err error) {
 	// Parse & Checking input
-	input := new(requests.UserAddRequest)
+	input := new(requests.ProductAddRequest)
 	if err := ctx.BodyParser(input); err != nil {
 		return handler.SendResponse(ctx, ResponseWithOutMeta, nil, nil, err, http.StatusBadRequest)
 	}
@@ -27,7 +43,7 @@ func (handler AuthHandler) Add(ctx *fiber.Ctx) (err error) {
 		handler.UcContract.PostgresTX.Rollback()
 		return handler.SendResponse(ctx, ResponseWithOutMeta, nil, nil, err, http.StatusUnprocessableEntity)
 	}
-	uc := usecase.NewUserUseCase(handler.UcContract)
+	uc := usecase.NewProductUseCase(handler.UcContract)
 	res, err := uc.Add(input)
 	if err != nil {
 		handler.UcContract.PostgresTX.Rollback()

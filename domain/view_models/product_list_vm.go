@@ -12,7 +12,7 @@ func NewProductListVM() *ProductListVM {
 	return &ProductListVM{}
 }
 
-func (vm *ProductListVM) Build(model models.Product) {
+func (vm *ProductListVM) Build(model *models.Product) {
 	*vm = ProductListVM{
 		ID:   model.ID,
 		Sku:  model.Sku,

@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS "products"
     "sku"         varchar(128) NOT NULL,
     "name"        varchar(128) NOT NULL,
     "slug"        varchar(128) NOT NULL,
-    "description" text         NOT NULL,
+    "description" text,
     "created_at"  timestamp    NOT NULL,
     "updated_at"  timestamp    NOT NULL,
     "deleted_at"  timestamp

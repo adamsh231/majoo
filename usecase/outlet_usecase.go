@@ -41,7 +41,7 @@ func (uc OutletUseCase) Browse(search, orderBy, sort string, page, limit int) (r
 	}
 	pagination = uc.setPaginationResponse(page, limit, totalCount)
 
-	return res, pagination, nil
+	return res, pagination, err
 }
 
 func (uc OutletUseCase) Read(id string) (res view_models.OutletDetailVM, err error) {

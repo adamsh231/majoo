@@ -11,12 +11,22 @@ type Product struct {
 	Sku         string
 	Name        string
 	Slug        string
-	Description string
+	Description sql.NullString
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   sql.NullTime
 	Images      string
 }
+
+const(
+	ProductSelectStatement = `SELECT P.id, M.id, M.name, P.sku, P.Name, P.Slug, P.description,
+							  P.created_at, P.updated_at, P.deleted_at, array_to_string(array_agg(PI.path), ',') as images FROM products P 
+							  INNER JOIN merchants M ON P.merchant_id = M.id
+							  LEFT JOIN product_images PI ON PI.product_id = P.id`
+	ProductDeleteStatement = `WHERE P.deleted_at IS NULL`
+	ProductSearchStatement = `AND P.name LIKE $1`
+	ProductGroupByStatement = `GROUP BY P.id, M.name, M.id`
+)
 
 func NewProduct() *Product {
 	return &Product{}

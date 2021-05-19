@@ -2,8 +2,10 @@ package repositories
 
 import (
 	"database/sql"
+	"fmt"
 	"github.com/adamsh231/majoo/domain/interfaces"
 	"github.com/adamsh231/majoo/domain/models"
+	"strings"
 )
 
 type ProductRepository struct {
@@ -15,7 +17,23 @@ func NewProductRepository(postgresDB *sql.DB) interfaces.IProductRepository{
 }
 
 func (repo ProductRepository) Browse(search, orderBy, sort string, limit, offset int) (res []models.Product, err error) {
-	panic("implement me")
+	model := models.NewProduct()
+	statement := models.ProductSelectStatement + ` ` + models.ProductDeleteStatement + ` ` + models.ProductSearchStatement + ` ` + models.ProductGroupByStatement  + ` order by P.` + orderBy + ` ` + sort + ` limit $2 offset $3`
+	fmt.Println(statement)
+	rows, err := repo.PostgresDB.Query(statement, "%"+strings.ToLower(search)+"%", limit, offset)
+	if err != nil {
+		return res, err
+	}
+
+	for rows.Next() {
+		temp, err := model.ScanRows(rows)
+		if err != nil {
+			return res, err
+		}
+		res = append(res, temp)
+	}
+
+	return res, err
 }
 
 func (repo ProductRepository) Read(model models.Product) (res models.Product, err error) {
@@ -23,7 +41,13 @@ func (repo ProductRepository) Read(model models.Product) (res models.Product, er
 }
 
 func (repo ProductRepository) Add(model models.Product, tx *sql.Tx) (res string, err error) {
-	panic("implement me")
+	statement := `insert into products (merchant_id, sku, name, slug, description, created_at, updated_at) values ($1, $2, $3, $4, $5, $6, $7) returning id`
+	err = tx.QueryRow(statement, model.Merchant.ID, model.Sku, model.Name, model.Slug, model.Description, model.CreatedAt, model.UpdatedAt).Scan(&res)
+	if err != nil {
+		return res, err
+	}
+
+	return res, err
 }
 
 func (repo ProductRepository) Edit(model models.Product, tx *sql.Tx) (res string, err error) {
@@ -35,5 +59,11 @@ func (repo ProductRepository) Delete(model models.Product, tx *sql.Tx) (res stri
 }
 
 func (repo ProductRepository) Count(search string) (res int, err error) {
-	panic("implement me")
+	statement := `SELECT COUNT (P.id) FROM products P ` + models.ProductDeleteStatement + ` ` + models.ProductSearchStatement
+	err = repo.PostgresDB.QueryRow(statement, "%"+strings.ToLower(search)+"%").Scan(&res)
+	if err != nil {
+		return res, err
+	}
+
+	return res, err
 }

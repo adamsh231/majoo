@@ -99,7 +99,7 @@ func (uc UserUseCase) Browse(search, orderBy, sort string, page, limit int) (res
 	}
 	pagination = uc.setPaginationResponse(page, limit, totalCount)
 
-	return res, pagination, nil
+	return res, pagination, err
 }
 
 func (uc UserUseCase) Add(req *requests.UserAddRequest) (res string, err error) {
