@@ -13,6 +13,7 @@ type ProductRoutes struct {
 
 func (route ProductRoutes) RegisterRoute() {
 	productHandler := handlers.ProductHandler{Handler: route.Handler}
+	productImageHandler := handlers.ProductImageHandler{Handler: route.Handler}
 	jwtMiddleware := middlewares.JwtMiddleware{Contract:route.Handler.UcContract}
 
 	productRoutes := route.RouteGroup.Group("/product")
@@ -23,5 +24,7 @@ func (route ProductRoutes) RegisterRoute() {
 	productRoutes.Post("", productHandler.Add)
 	productRoutes.Put("/:id", productHandler.Edit)
 	productRoutes.Delete("/:id", productHandler.Delete)
+
+	productRoutes.Post("/image", productImageHandler.Add)
 }
 

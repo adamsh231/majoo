@@ -11,7 +11,7 @@ import (
 )
 
 type Handler struct {
-	UcContract    *usecase.Contract
+	UcContract *usecase.Contract
 }
 
 const (
@@ -67,4 +67,17 @@ func (handler Handler) ExtractErrorValidationMessages(error validator.Validation
 	}
 
 	return errorMessage
+}
+
+func (handler Handler) CheckImageType(imageType string) bool {
+	isValid := false
+	imageTypes := []string{".png", ".jpg", "jpeg"}
+	for _, valImageType := range imageTypes {
+		if valImageType == strings.ToLower(imageType) {
+			isValid = true
+			break
+		}
+	}
+
+	return isValid
 }

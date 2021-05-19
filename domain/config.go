@@ -19,11 +19,12 @@ import (
 )
 
 type Config struct {
-	PostgresDB    *sql.DB
-	Validator     *validator.Validate
-	JweCredential jwe.Credential
-	JwtCredential jwt.JwtCredential
-	JwtConfig     jwtFiber.Config
+	PostgresDB     *sql.DB
+	Validator      *validator.Validate
+	JweCredential  jwe.Credential
+	JwtCredential  jwt.JwtCredential
+	JwtConfig      jwtFiber.Config
+	ImageDirectory string
 }
 
 var (
@@ -75,6 +76,9 @@ func LoadConfig() (res Config, err error) {
 
 	// validator
 	res.Validator = ValidatorDriver
+
+	// assets directory
+	res.ImageDirectory = os.Getenv("IMAGE_DIRECTORY")
 
 	return res, err
 }

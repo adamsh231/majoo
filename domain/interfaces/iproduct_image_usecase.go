@@ -1,6 +1,7 @@
 package interfaces
 
 import (
+	"github.com/adamsh231/majoo/domain/requests"
 	"github.com/adamsh231/majoo/domain/view_models"
 )
 
@@ -9,7 +10,7 @@ type IProductImageUseCase interface {
 
 	Read(id string) (res view_models.ProductImageDetailVM, err error)
 
-	Add() (res string, err error)
+	Add(req *requests.ProductImageAddRequest, fileName string) (res string, err error)
 
 	Edit() (res string, err error)
 

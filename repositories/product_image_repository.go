@@ -23,7 +23,13 @@ func (repo ProductImageRepository) Read(model models.ProductImage) (res models.P
 }
 
 func (repo ProductImageRepository) Add(model models.ProductImage, tx *sql.Tx) (res string, err error) {
-	panic("implement me")
+	statement := `insert into product_images (product_id, path, alt, created_at, updated_at) values ($1, $2, $3, $4, $5) returning id`
+	err = tx.QueryRow(statement, model.ProductID, model.Path, model.Alt, model.CreatedAt, model.UpdatedAt).Scan(&res)
+	if err != nil {
+		return res, err
+	}
+
+	return res, err
 }
 
 func (repo ProductImageRepository) Edit(model models.ProductImage, tx *sql.Tx) (res string, err error) {

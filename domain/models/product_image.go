@@ -1,15 +1,18 @@
 package models
 
-import "database/sql"
+import (
+	"database/sql"
+	"time"
+)
 
 type ProductImage struct {
 	ID        string
 	ProductID string
 	Path      string
 	Alt       string
-	CreatedAt string
-	UpdatedAt string
-	DeletedAt string
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt sql.NullTime
 }
 
 func NewProductImage() *ProductImage {

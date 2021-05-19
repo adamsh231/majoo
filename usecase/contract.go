@@ -20,6 +20,7 @@ type Contract struct {
 	Translator    ut.Translator
 	JweCredential jwe.Credential
 	JwtCredential jwt.JwtCredential
+	ImageDirectory string
 }
 
 const (

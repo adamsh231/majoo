@@ -41,4 +41,5 @@ var (
 	UnexpectedSigningMethod = "unexpected signing method"
 	UnexpectedClaims        = "unexpected claims"
 	DeleteSuccessfully      = "Deleted!"
+	InvalidImageType         = "File Is Not an Images!"
 )

@@ -38,13 +38,14 @@ func main() {
 
 	// init contract
 	ucContract := usecase.Contract{
-		App:        app,
-		PostgresDB: config.PostgresDB,
-		PostgresTX: nil,
-		Validate:   domain.ValidatorDriver,
-		Translator: domain.Translator,
-		JwtCredential:        config.JwtCredential,
-		JweCredential:        config.JweCredential,
+		App:            app,
+		PostgresDB:     config.PostgresDB,
+		PostgresTX:     nil,
+		Validate:       domain.ValidatorDriver,
+		Translator:     domain.Translator,
+		JwtCredential:  config.JwtCredential,
+		JweCredential:  config.JweCredential,
+		ImageDirectory: config.ImageDirectory,
 	}
 
 	//init bootstrap
