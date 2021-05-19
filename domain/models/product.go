@@ -7,7 +7,7 @@ import (
 
 type Product struct {
 	ID          string
-	MerchantID  string
+	Merchant    Merchant
 	Sku         string
 	Name        string
 	Slug        string
@@ -15,14 +15,15 @@ type Product struct {
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   sql.NullTime
+	Images      string
 }
 
-func NewProduct() *Product{
+func NewProduct() *Product {
 	return &Product{}
 }
 
 func (model Product) ScanRows(rows *sql.Rows) (res Product, err error) {
-	err = rows.Scan(&res.ID, &res.MerchantID, &res.Sku, &res.Name, &res.Slug, &res.Description, &res.CreatedAt, &res.UpdatedAt, &res.DeletedAt)
+	err = rows.Scan(&res.ID, &res.Merchant.ID, &res.Merchant.Name, &res.Sku, &res.Name, &res.Slug, &res.Description, &res.CreatedAt, &res.UpdatedAt, &res.DeletedAt)
 	if err != nil {
 		return res, err
 	}
@@ -31,7 +32,7 @@ func (model Product) ScanRows(rows *sql.Rows) (res Product, err error) {
 }
 
 func (model Product) ScanRow(row *sql.Row) (res Product, err error) {
-	err = row.Scan(&res.ID, &res.MerchantID, &res.Sku, &res.Name, &res.Slug, &res.Description, &res.CreatedAt, &res.UpdatedAt, &res.DeletedAt)
+	err = row.Scan(&res.ID, &res.Merchant.ID, &res.Merchant.Name, &res.Sku, &res.Name, &res.Slug, &res.Description, &res.CreatedAt, &res.UpdatedAt, &res.DeletedAt)
 	if err != nil {
 		return res, err
 	}

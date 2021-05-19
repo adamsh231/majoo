@@ -6,13 +6,13 @@ import (
 )
 
 type IProductUseCase interface {
-	Browse(search, orderBy, sort string, page, limit int) (res []*view_models.UserListVM, pagination view_models.PaginationVm, err error)
+	Browse(search, orderBy, sort string, page, limit int) (res []*view_models.ProductListVM, pagination view_models.PaginationVm, err error)
 
-	Read(req *requests.UserAddRequest, id string) (res view_models.LoginVm, err error)
+	Read(id string) (res view_models.ProductDetailVM, err error)
 
-	Add(req *requests.UserAddRequest) (res string, err error)
+	Add(req *requests.ProductAddRequest) (res string, err error)
 
-	Edit(req *requests.UserEditRequest, id string) (res string, err error)
+	Edit(req *requests.ProductEditRequest, id string) (res string, err error)
 
 	Delete(id string) (res string, err error)
 }
