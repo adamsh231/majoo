@@ -21,5 +21,7 @@ func (route ProductRoutes) RegisterRoute() {
 	productRoutes.Get("", productHandler.Browse)
 	productRoutes.Get("/:id", productHandler.Read)
 	productRoutes.Post("", productHandler.Add)
+	productRoutes.Put("/:id", productHandler.Edit)
+	productRoutes.Delete("/:id", productHandler.Delete)
 }
 

@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"database/sql"
 	"github.com/adamsh231/majoo/domain/interfaces"
 	"github.com/adamsh231/majoo/domain/models"
 	"github.com/adamsh231/majoo/domain/requests"
@@ -84,9 +85,39 @@ func (uc ProductUseCase) Add(req *requests.ProductAddRequest) (res string, err e
 }
 
 func (uc ProductUseCase) Edit(req *requests.ProductEditRequest, id string) (res string, err error) {
-	panic("implement me")
+	now := time.Now().UTC()
+	model := models.Product{
+		ID:        id,
+		Merchant:  models.Merchant{ID: req.MerchantID},
+		Sku:       req.Sku,
+		Name:      req.Name,
+		Slug:      slug.Make(req.Name),
+		UpdatedAt: now,
+	}
+
+	repo := repositories.NewProductRepository(uc.PostgresDB)
+	res, err = repo.Edit(model, uc.PostgresTX)
+	if err != nil {
+		helper.LogOnly(err.Error(), "uc-add")
+		return res, err
+	}
+
+	return res, err
 }
 
 func (uc ProductUseCase) Delete(id string) (res string, err error) {
-	panic("implement me")
+	now := time.Now().UTC()
+	model := models.Product{
+		ID:        id,
+		DeletedAt: sql.NullTime{Time: now, Valid: true},
+	}
+
+	repo := repositories.NewProductRepository(uc.PostgresDB)
+	res, err = repo.Delete(model, uc.PostgresTX)
+	if err != nil {
+		helper.LogOnly(err.Error(), "uc-delete")
+		return res, err
+	}
+
+	return res, err
 }

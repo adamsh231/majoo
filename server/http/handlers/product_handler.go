@@ -64,3 +64,54 @@ func (handler ProductHandler) Add(ctx *fiber.Ctx) (err error) {
 
 	return handler.SendResponse(ctx, ResponseWithOutMeta, res, nil, err, http.StatusUnprocessableEntity)
 }
+
+func (handler ProductHandler) Edit(ctx *fiber.Ctx) (err error) {
+	// Get param
+	ID := ctx.Params("id")
+
+	// Parse & Checking input
+	input := new(requests.ProductEditRequest)
+	if err := ctx.BodyParser(input); err != nil {
+		return handler.SendResponse(ctx, ResponseWithOutMeta, nil, nil, err, http.StatusBadRequest)
+	}
+	if err := handler.UcContract.Validate.Struct(input); err != nil {
+		return handler.SendResponse(ctx, ResponseWithOutMeta, nil, nil, err, http.StatusBadRequest)
+	}
+
+	// Database processing
+	handler.UcContract.PostgresTX, err = handler.UcContract.PostgresDB.Begin()
+	if err != nil {
+		handler.UcContract.PostgresTX.Rollback()
+		return handler.SendResponse(ctx, ResponseWithOutMeta, nil, nil, err, http.StatusUnprocessableEntity)
+	}
+	uc := usecase.NewProductUseCase(handler.UcContract)
+	res, err := uc.Edit(input, ID)
+	if err != nil {
+		handler.UcContract.PostgresTX.Rollback()
+		return handler.SendResponse(ctx, ResponseWithOutMeta, nil, nil, err, http.StatusUnprocessableEntity)
+	}
+	handler.UcContract.PostgresTX.Commit()
+
+	return handler.SendResponse(ctx, ResponseWithOutMeta, res, nil, err, http.StatusUnprocessableEntity)
+}
+
+func (handler ProductHandler) Delete(ctx *fiber.Ctx) (err error) {
+	// Get param
+	ID := ctx.Params("id")
+
+	// Database processing
+	handler.UcContract.PostgresTX, err = handler.UcContract.PostgresDB.Begin()
+	if err != nil {
+		handler.UcContract.PostgresTX.Rollback()
+		return handler.SendResponse(ctx, ResponseWithOutMeta, nil, nil, err, http.StatusUnprocessableEntity)
+	}
+	uc := usecase.NewProductUseCase(handler.UcContract)
+	res, err := uc.Delete(ID)
+	if err != nil {
+		handler.UcContract.PostgresTX.Rollback()
+		return handler.SendResponse(ctx, ResponseWithOutMeta, nil, nil, err, http.StatusUnprocessableEntity)
+	}
+	handler.UcContract.PostgresTX.Commit()
+
+	return handler.SendResponse(ctx, ResponseWithOutMeta, res, nil, err, http.StatusUnprocessableEntity)
+}

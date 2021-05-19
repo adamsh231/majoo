@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"database/sql"
-	"fmt"
 	"github.com/adamsh231/majoo/domain/interfaces"
 	"github.com/adamsh231/majoo/domain/models"
 	"strings"
@@ -37,7 +36,6 @@ func (repo ProductRepository) Browse(search, orderBy, sort string, limit, offset
 
 func (repo ProductRepository) Read(model models.Product) (res models.Product, err error) {
 	statement := models.ProductSelectStatement + ` ` + models.ProductDeleteStatement + ` AND P.id=$1 ` + models.ProductGroupByStatement
-	fmt.Println(statement)
 	row := repo.PostgresDB.QueryRow(statement, model.ID)
 	res, err = model.ScanRow(row)
 	if err != nil {
@@ -58,11 +56,25 @@ func (repo ProductRepository) Add(model models.Product, tx *sql.Tx) (res string,
 }
 
 func (repo ProductRepository) Edit(model models.Product, tx *sql.Tx) (res string, err error) {
-	panic("implement me")
+	statement := `UPDATE products SET merchant_id=$1, sku=$2, name=$3, slug=$4, description=$5, updated_at=$6 WHERE id=$7`
+	_, err = tx.Exec(statement, model.Merchant.ID, model.Sku, model.Name, model.Slug, model.Description, model.UpdatedAt, model.ID)
+	if err != nil {
+		return res, err
+	}
+
+	res = model.ID
+	return res, err
 }
 
 func (repo ProductRepository) Delete(model models.Product, tx *sql.Tx) (res string, err error) {
-	panic("implement me")
+	statement := `UPDATE products SET deleted_at=$1 WHERE id=$2`
+	_, err = tx.Exec(statement, model.DeletedAt, model.ID)
+	if err != nil {
+		return res, err
+	}
+
+	res = model.ID
+	return res, err
 }
 
 func (repo ProductRepository) Count(search string) (res int, err error) {
