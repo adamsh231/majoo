@@ -5,18 +5,20 @@ import (
 )
 
 type UserListVM struct {
-	Name  string
-	Email string
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Email string `json:"email"`
 	//Role  string
 }
 
-func NewUserListVM() *UserListVM{
+func NewUserListVM() *UserListVM {
 	return &UserListVM{}
 }
 
-func(vm *UserListVM) Build(model *models.User){
+func (vm *UserListVM) Build(model *models.User) {
 	*vm = UserListVM{
-		Name:      model.Name,
-		Email:     model.Email,
+		ID:    model.ID,
+		Name:  model.Name,
+		Email: model.Email,
 	}
 }
