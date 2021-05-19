@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS "outlets"
     "merchant_id" char(36)     NOT NULL,
     "name"        varchar(128) NOT NULL,
     "phone"       varchar(128) NOT NULL,
-    "alamat"      text         NOT NULL,
+    "address"     text         NOT NULL,
     "created_at"  timestamp    NOT NULL,
     "updated_at"  timestamp    NOT NULL,
     "deleted_at"  timestamp

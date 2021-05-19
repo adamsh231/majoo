@@ -17,6 +17,10 @@ type Product struct {
 	DeletedAt   sql.NullTime
 }
 
+func NewProduct() *Product{
+	return &Product{}
+}
+
 func (model Product) ScanRows(rows *sql.Rows) (res Product, err error) {
 	err = rows.Scan(&res.ID, &res.MerchantID, &res.Sku, &res.Name, &res.Slug, &res.Description, &res.CreatedAt, &res.UpdatedAt, &res.DeletedAt)
 	if err != nil {
