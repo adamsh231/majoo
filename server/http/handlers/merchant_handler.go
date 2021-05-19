@@ -27,6 +27,17 @@ func (handler MerchantHandler) Browse(ctx *fiber.Ctx) (err error) {
 	return handler.SendResponse(ctx, ResponseWithMeta, res, pagination, err, http.StatusUnprocessableEntity)
 }
 
+func (handler MerchantHandler) Read(ctx *fiber.Ctx) (err error) {
+	// Get Param
+	id := ctx.Params("id")
+
+	// Database Processing
+	uc := usecase.NewMerchantUseCase(handler.UcContract)
+	res, err := uc.Read(id)
+
+	return handler.SendResponse(ctx, ResponseWithOutMeta, res, nil, err, http.StatusUnprocessableEntity)
+}
+
 func (handler MerchantHandler) Add(ctx *fiber.Ctx) (err error) {
 	// Parse & Checking input
 	input := new(requests.MerchantAddRequest)

@@ -8,7 +8,7 @@ import (
 type IMerchantUseCase interface {
 	Browse(search, orderBy, sort string, page, limit int) (res []*view_models.MerchantListVM, pagination view_models.PaginationVm, err error)
 
-	Read(id string) (res view_models.MerchantDetailVM, err error)
+	Read(id string) (res *view_models.MerchantDetailVM, err error)
 
 	Add(req *requests.MerchantAddRequest) (res string, err error)
 

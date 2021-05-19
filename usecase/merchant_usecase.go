@@ -44,8 +44,21 @@ func (uc MerchantUseCase) Browse(search, orderBy, sort string, page, limit int) 
 	return res, pagination, nil
 }
 
-func (uc MerchantUseCase) Read(id string) (res view_models.MerchantDetailVM, err error) {
-	panic("implement me")
+func (uc MerchantUseCase) Read(id string) (res *view_models.MerchantDetailVM, err error) {
+	repository := repositories.NewMerchantRepository(uc.PostgresDB)
+	model := models.Merchant{ID: id}
+
+	merchant, err := repository.Read(model)
+	if err != nil {
+		helper.LogOnly(err.Error(), "uc-read")
+		return res, err
+	}
+
+	vm := view_models.NewMerchantDetailVM()
+	vm.Build(&merchant)
+
+	res = vm
+	return res, err
 }
 
 func (uc MerchantUseCase) Add(req *requests.MerchantAddRequest) (res string, err error) {

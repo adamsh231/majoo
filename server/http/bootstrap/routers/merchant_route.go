@@ -19,6 +19,7 @@ func (route MerchantRoutes) RegisterRoute() {
 	merchantRoutes.Use(jwtMiddleware.New)
 
 	merchantRoutes.Get("", merchantHandler.Browse)
+	merchantRoutes.Get("/:id", merchantHandler.Read)
 	merchantRoutes.Post("", merchantHandler.Add)
 
 }

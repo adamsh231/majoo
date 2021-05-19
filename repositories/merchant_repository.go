@@ -35,7 +35,14 @@ func (repo MerchantRepository) Browse(search, orderBy, sort string, limit, offse
 }
 
 func (repo MerchantRepository) Read(model models.Merchant) (res models.Merchant, err error) {
-	panic("implement me")
+	statement := models.MerchantSelectStatement + ` ` + models.MerchantDeleteStatement + ` AND M.id=$1 `
+	row := repo.PostgresDB.QueryRow(statement, model.ID)
+	res, err = model.ScanRow(row)
+	if err != nil {
+		return res, err
+	}
+
+	return res, err
 }
 
 func (repo MerchantRepository) Add(model models.Merchant, tx *sql.Tx) (res string, err error) {
