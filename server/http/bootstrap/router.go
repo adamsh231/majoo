@@ -20,13 +20,6 @@ func (boot Bootstrap) RegisterRoute() {
 	// Route Group
 	apiV1 :=rootParentGroup.Group("/v1")
 
-	// Test route
-	testRoute := routers.TestRoutes{
-		RouteGroup: apiV1,
-		Handler:    handlerType,
-	}
-	testRoute.RegisterRoute()
-
 	// Auth route
 	AuthRoute := routers.AuthRoutes{
 		RouteGroup: apiV1,

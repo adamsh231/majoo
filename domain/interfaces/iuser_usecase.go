@@ -8,5 +8,7 @@ import (
 type IUserUseCase interface {
 	Add(req *requests.UserAddRequest) (res string, err error)
 
+	Edit(req *requests.UserEditRequest, id string) (res string, err error)
+
 	Login(req *requests.UserLoginRequest) (res view_models.LoginVm, err error)
 }

@@ -62,12 +62,12 @@ func (jwtMiddleware JwtMiddleware) New(ctx *fiber.Ctx) (err error) {
 		return handler.SendResponse(ctx, handlers.ResponseWithOutMeta, nil, nil, errors.New(messages.Unauthorized), http.StatusUnauthorized)
 	}
 
-	//TODO: CARI TAU CARA KERJA
+	//TODO: Payload
 	//set id to uce case contract
 	claims.Id = fmt.Sprintf("%v", jweRes["id"])
-	roleID := fmt.Sprintf("%v", jweRes["roleID"])
+	role := fmt.Sprintf("%v", jweRes["role"])
 	jwtMiddleware.Contract.UserID = claims.Id
-	jwtMiddleware.Contract.RoleID = helper.StringToInt(roleID)
+	jwtMiddleware.Contract.Role = role
 
 	return ctx.Next()
 }

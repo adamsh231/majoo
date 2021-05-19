@@ -15,7 +15,7 @@ func NewUserRepository(postgresDB *sql.DB) interfaces.IUserRepository {
 }
 
 func (repo UserRepository) Read(model models.User) (res models.User, err error) {
-	statement := models.UserSelectStatement + ` ` + models.UserDeleteStatement + " AND U.email=$1"
+	statement := models.UserSelectStatement + ` ` + models.UserDeleteStatement + ` AND U.email=$1`
 	row := repo.PostgresDB.QueryRow(statement, model.Email)
 	res, err = model.ScanRow(row)
 	if err != nil {
@@ -32,5 +32,16 @@ func (repo UserRepository) Add(model models.User, tx *sql.Tx) (res string, err e
 		return res, err
 	}
 
+	return res, err
+}
+
+func (repo UserRepository) Edit(model models.User, tx *sql.Tx) (res string, err error) {
+	statement := `UPDATE users SET name=$1, email=$2, password=$3, updated_at=$4 WHERE id=$5`
+	_, err = tx.Exec(statement, model.Name, model.Email, model.Password, model.UpdatedAt, model.ID)
+	if err != nil {
+		return res, err
+	}
+
+	res = model.ID
 	return res, err
 }

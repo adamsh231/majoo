@@ -12,7 +12,7 @@ import (
 
 type Contract struct {
 	UserID        string
-	RoleID        int
+	Role          string
 	App           *fiber.App
 	PostgresDB    *sql.DB
 	PostgresTX    *sql.Tx
