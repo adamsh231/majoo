@@ -14,22 +14,22 @@ func NewMerchantUseCase(ucContract *Contract) interfaces.IMerchantUseCase{
 	return &MerchantUseCase{Contract: ucContract}
 }
 
-func (m MerchantUseCase) Browse(search, orderBy, sort string, page, limit int) (res []*view_models.MerchantListVM, pagination view_models.PaginationVm, err error) {
+func (uc MerchantUseCase) Browse(search, orderBy, sort string, page, limit int) (res []*view_models.MerchantListVM, pagination view_models.PaginationVm, err error) {
 	panic("implement me")
 }
 
-func (m MerchantUseCase) Read(id string) (res view_models.MerchantDetailVM, err error) {
+func (uc MerchantUseCase) Read(id string) (res view_models.MerchantDetailVM, err error) {
 	panic("implement me")
 }
 
-func (m MerchantUseCase) Add(req *requests.MerchantAddRequest) (res string, err error) {
+func (uc MerchantUseCase) Add(req *requests.MerchantAddRequest) (res string, err error) {
 	panic("implement me")
 }
 
-func (m MerchantUseCase) Edit(req *requests.MerchantEditRequest, id string) (res string, err error) {
+func (uc MerchantUseCase) Edit(req *requests.MerchantEditRequest, id string) (res string, err error) {
 	panic("implement me")
 }
 
-func (m MerchantUseCase) Delete(id string) (res string, err error) {
+func (uc MerchantUseCase) Delete(id string) (res string, err error) {
 	panic("implement me")
 }
