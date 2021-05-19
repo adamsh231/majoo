@@ -11,6 +11,9 @@ func (boot Bootstrap) RegisterRoute() {
 		UcContract: &boot.UcContract,
 	}
 
+	// Static file
+	boot.UcContract.App.Static("/", boot.UcContract.ImageDirectory)
+
 	// HealthCheck Route
 	rootParentGroup := boot.UcContract.App.Group("/api")
 	rootParentGroup.Get("", func(ctx *fiber.Ctx) error {
