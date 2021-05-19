@@ -7,7 +7,7 @@ ERD.png
 ---
 Routing
 ---
-Postman Public link collection: https://www.getpostman.com/collections/0e5b459be8d619c19a6d
+Postman Public link collection: https://www.postman.com/collections/0e5b459be8d619c19a6d
 
 
 ---
