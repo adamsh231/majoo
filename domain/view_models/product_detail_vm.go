@@ -24,7 +24,7 @@ func NewProductDetailVM() *ProductDetailVM {
 	return &ProductDetailVM{}
 }
 
-func (vm *ProductDetailVM) Build(model models.Product) {
+func (vm *ProductDetailVM) Build(model *models.Product) {
 	*vm = ProductDetailVM{
 		ID: model.ID,
 		Merchant: merchant{

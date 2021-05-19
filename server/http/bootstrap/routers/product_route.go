@@ -19,6 +19,7 @@ func (route ProductRoutes) RegisterRoute() {
 	productRoutes.Use(jwtMiddleware.New)
 
 	productRoutes.Get("", productHandler.Browse)
+	productRoutes.Get("/:id", productHandler.Read)
 	productRoutes.Post("", productHandler.Add)
 }
 

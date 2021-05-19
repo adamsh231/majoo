@@ -19,7 +19,6 @@ func NewProductRepository(postgresDB *sql.DB) interfaces.IProductRepository{
 func (repo ProductRepository) Browse(search, orderBy, sort string, limit, offset int) (res []models.Product, err error) {
 	model := models.NewProduct()
 	statement := models.ProductSelectStatement + ` ` + models.ProductDeleteStatement + ` ` + models.ProductSearchStatement + ` ` + models.ProductGroupByStatement  + ` order by P.` + orderBy + ` ` + sort + ` limit $2 offset $3`
-	fmt.Println(statement)
 	rows, err := repo.PostgresDB.Query(statement, "%"+strings.ToLower(search)+"%", limit, offset)
 	if err != nil {
 		return res, err
@@ -37,7 +36,15 @@ func (repo ProductRepository) Browse(search, orderBy, sort string, limit, offset
 }
 
 func (repo ProductRepository) Read(model models.Product) (res models.Product, err error) {
-	panic("implement me")
+	statement := models.ProductSelectStatement + ` ` + models.ProductDeleteStatement + ` AND P.id=$1 ` + models.ProductGroupByStatement
+	fmt.Println(statement)
+	row := repo.PostgresDB.QueryRow(statement, model.ID)
+	res, err = model.ScanRow(row)
+	if err != nil {
+		return res, err
+	}
+
+	return res, err
 }
 
 func (repo ProductRepository) Add(model models.Product, tx *sql.Tx) (res string, err error) {

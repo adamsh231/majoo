@@ -45,8 +45,21 @@ func (uc ProductUseCase) Browse(search, orderBy, sort string, page, limit int) (
 	return res, pagination, err
 }
 
-func (uc ProductUseCase) Read(id string) (res view_models.ProductDetailVM, err error) {
-	panic("implement me")
+func (uc ProductUseCase) Read(id string) (res *view_models.ProductDetailVM, err error) {
+	repository := repositories.NewProductRepository(uc.PostgresDB)
+	model := models.Product{ID: id}
+
+	product, err := repository.Read(model)
+	if err != nil {
+		helper.LogOnly(err.Error(), "uc-read")
+		return res, err
+	}
+
+	vm := view_models.NewProductDetailVM()
+	vm.Build(&product)
+
+	res = vm
+	return res, err
 }
 
 func (uc ProductUseCase) Add(req *requests.ProductAddRequest) (res string, err error) {
