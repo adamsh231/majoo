@@ -34,6 +34,13 @@ func (boot Bootstrap) RegisterRoute() {
 	}
 	MerchantRoute.RegisterRoute()
 
+	// Outlet Route
+	OutletRoute := routers.OutletRoutes{
+		RouteGroup: apiV1,
+		Handler:    handlerType,
+	}
+	OutletRoute.RegisterRoute()
+
 	// Product Route
 	ProductRoute := routers.ProductRoutes{
 		RouteGroup: apiV1,

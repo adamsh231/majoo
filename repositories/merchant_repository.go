@@ -31,7 +31,7 @@ func (repo MerchantRepository) Browse(search, orderBy, sort string, limit, offse
 		res = append(res, temp)
 	}
 
-	return res, nil
+	return res, err
 }
 
 func (repo MerchantRepository) Read(model models.Merchant) (res models.Merchant, err error) {

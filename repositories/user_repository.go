@@ -31,7 +31,7 @@ func (repo UserRepository) Browse(search, orderBy, sort string, limit, offset in
 		res = append(res, temp)
 	}
 
-	return res, nil
+	return res, err
 }
 
 func (repo UserRepository) Read(model models.User) (res models.User, err error) {
